@@ -4,19 +4,15 @@ class Person:
     def __init__(self, name: str, age: int) -> None:
         self.name = name
         self.age = age
-        self.wife = None
-        self.husband = None
         Person.people[name] = self
 
 
 def create_person_list(people: list) -> list:
     Person.people.clear()
 
-    # First create all person instances
     for person_data in people:
         Person(person_data["name"], person_data["age"])
 
-    # Then establish relationships
     for person_data in people:
         person = Person.people[person_data["name"]]
 
