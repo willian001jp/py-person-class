@@ -1,22 +1,29 @@
 class Person:
-    people = {}  # Class attribute to store instances by name
+    people = {}
 
     def __init__(self, name: str, age: int) -> None:
         self.name = name
         self.age = age
         self.wife = None
         self.husband = None
-        Person.people[name] = self  # Add instance to people dict
+        Person.people[name] = self
 
 
 def create_person_list(people: list) -> list:
-    # Create all Person instances using list comprehension
-    [Person(person_data["name"], person_data["age"]) for person_data in people]
+    Person.people.clear()
 
-    # Establish relationships
+    # First create all person instances
+    for person_data in people:
+        Person(person_data["name"], person_data["age"])
+
+    # Then establish relationships
     for person_data in people:
         person = Person.people[person_data["name"]]
-        person.wife = Person.people.get(person_data.get("wife"))
-        person.husband = Person.people.get(person_data.get("husband"))
 
-    return list(Person.people.values())
+        if "wife" in person_data and person_data["wife"] is not None:
+            person.wife = Person.people[person_data["wife"]]
+
+        if "husband" in person_data and person_data["husband"] is not None:
+            person.husband = Person.people[person_data["husband"]]
+
+    return [Person.people[person["name"]] for person in people]
