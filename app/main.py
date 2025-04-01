@@ -10,20 +10,13 @@ class Person:
 
 
 def create_person_list(people: list) -> list:
-    # First pass: create all Person instances
-    for person_data in people:
-        Person(person_data["name"], person_data["age"])
+    # Create all Person instances using list comprehension
+    [Person(person_data["name"], person_data["age"]) for person_data in people]
 
-    # Second pass: establish relationships
+    # Establish relationships
     for person_data in people:
         person = Person.people[person_data["name"]]
-
-        if person_data.get("wife"):
-            wife_name = person_data["wife"]
-            person.wife = Person.people[wife_name]
-
-        if person_data.get("husband"):
-            husband_name = person_data["husband"]
-            person.husband = Person.people[husband_name]
+        person.wife = Person.people.get(person_data.get("wife"))
+        person.husband = Person.people.get(person_data.get("husband"))
 
     return list(Person.people.values())
